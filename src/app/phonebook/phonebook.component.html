@@ -1,0 +1,56 @@
+<div class="container">
+    <h1>My phone book!</h1>
+    <div class="my-form">
+        <input type="text" placeholder="search text goes here" [(ngModel)]="searchText">
+        <input type="button" class="btn add-btn" value="Add phone" (click)="addContact()"> 
+    </div>
+    <table>
+        <tr>
+            <th (click)="changeSort($event)" id="name">First name 
+                <ng-container *ngIf=" showArrow && sortColumn === 'name' "> 
+                    <span [innerHTML] = "myArrow"></span> 
+                </ng-container>
+            </th>
+            <th (click)="changeSort($event)" id="surname">Last name 
+                <ng-container *ngIf="showArrow && sortColumn === 'surname' "> 
+                    <span [innerHTML] = "myArrow"></span> 
+                </ng-container>
+            </th>
+            <th (click)="changeSort($event)" id="phone">Number
+                <ng-container *ngIf="showArrow && sortColumn === 'phone' "> 
+                    <span [innerHTML] = "myArrow"></span> 
+                </ng-container>
+            </th>
+            <th>edit</th>
+            <th>delete</th>
+        </tr>
+        <tbody>
+            <tr *ngFor="let contact of contactData | sort: sortColumn: asc | search: searchText; index as i">
+                <td> {{ contact.name | titlecase}} </td>
+                <td> {{ contact.surname | titlecase }} </td>
+                <td> {{ contact.phone }} </td>
+                <td>
+                    <input type="button" class="btn edit" value="Edit" (click)="editContact(i)">
+                </td>
+                <td>
+                    <input type="button" class="btn delete" value="Delete" (click)="deleteContact(i)" > 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-container *ngIf="openModal">
+    <div class="wrapper">
+        <div class="content">
+            <h2>Add phone</h2>
+            <span class="close" (click)="closeModal()">x</span>
+            <div class="modal-form">
+                <input type="text" class="add" placeholder="first name goes here" [(ngModel)]="name"> 
+                <input type="text" class="add" placeholder="second name goes here" [(ngModel)]="surname">
+                <input type="text" class="add" placeholder="phone number goes here" [(ngModel)]="phone"> 
+            </div>
+            <input type="button" class="btn  save" value="save" (click)="saveContact()">
+        </div>
+    </div>
+</ng-container>
